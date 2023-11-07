@@ -21,7 +21,7 @@ pub fn run() -> Result<Server, std::io::Error> {
             .route("/nonce", web::post().to(login::nonce))
             .route("/wallet/login", web::post().to(login::wallet_login))
     })
-    .bind("127.0.0.1:8000")?
+    .bind("0.0.0.0:8000")?
     .run();
 
     Ok(server)
