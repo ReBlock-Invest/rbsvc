@@ -60,14 +60,16 @@ pub async fn nonce(data: web::Json<NonceReq>) -> HttpResponse {
 pub async fn wallet_login(data: web::Json<LoginReq>) -> HttpResponse {
     let mut conn = connect();
     let key = format!("rb:nonce:{}", data.address);
-    let n_data: u64 = conn.get(&key).unwrap();
+    let nonce_data: u64 = conn.get(&key).unwrap_or_else(|_err| {
+        return 0u64;
+    });
 
     let signature = Signature::from_str(&data.signature).expect("Invalid signature format");
-    let message = eth_message(n_data.to_string());
+    let message = eth_message(nonce_data.to_string());
     let address = Address::from_str(&data.address).expect("Invalid Ethereum address format");
 
     let is_valid = signature
-        .verify(n_data.to_string().as_str(), address)
+        .verify(nonce_data.to_string().as_str(), address)
         .is_ok();
 
     if !is_valid {
