@@ -35,7 +35,7 @@ pub fn run() -> Result<Server, std::io::Error> {
             .route("/nonce", web::post().to(login::nonce))
             .route("/wallet/login", web::post().to(login::wallet_login))
             .route("/userinfo", web::get().to(user::user_info))
-            .route("/wh-xxx", web::post().to(wh::webhook))
+            .route("/wh-xxx-wasweswos", web::post().to(wh::webhook))
     })
     .bind("0.0.0.0:8000")?
     .run();

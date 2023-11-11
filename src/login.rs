@@ -1,3 +1,4 @@
+use crate::user::{get_user, update_user, UserResp};
 use actix_web::{http::header::ContentType, web, HttpResponse};
 use ethers::prelude::*;
 use ethers::utils::keccak256;
@@ -42,11 +43,10 @@ fn connect() -> redis::Connection {
 pub async fn nonce(data: web::Json<NonceReq>) -> HttpResponse {
     let mut conn = connect();
 
-    let key = format!("rb:nonce:{}", data.address);
-    let n_data: u64 = conn.get(&key).unwrap();
-
+    let nonce_key = format!("rb:nonce:{}", data.address);
+    let nonce_data: u64 = conn.get(&nonce_key).unwrap();
     let nonce = NonceResp {
-        nonce: n_data,
+        nonce: nonce_data,
         address: data.address.to_owned(),
     };
 
@@ -89,15 +89,14 @@ pub async fn wallet_login(data: web::Json<LoginReq>) -> HttpResponse {
     }
 
     let session = generate_random_string(20);
-
     let resp = LoginResp {
         access_token: session.clone(),
     };
-
     let _: i64 = conn.incr(&key, 1).unwrap();
-
     let sess_key = format!("rb:session:{}", session);
     let _: () = conn.set(&sess_key, &data.address).unwrap();
+
+    update_user_invest_state(&data.address);
 
     HttpResponse::Ok()
         .content_type(ContentType::json())
@@ -125,4 +124,16 @@ fn generate_random_string(length: usize) -> String {
         .collect();
 
     random_string
+}
+
+fn update_user_invest_state(address: &str) {
+    let user = get_user(address.to_owned()).unwrap();
+
+    if user.invest_state.is_empty() {
+        let _ = update_user(
+            address.to_owned(),
+            String::from("invest_state"),
+            String::from("WALLET_VERIFIED"),
+        );
+    }
 }
