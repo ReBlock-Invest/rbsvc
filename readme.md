@@ -3,7 +3,7 @@
 ### get nonce
 
 ```
-curl --location 'http://178.79.160.20:8000/nonce' \
+curl --location 'https://rb.blocknaut.xyz/nonce' \
 --header 'Content-Type: application/json' \
 --data '{
     "address": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
@@ -20,7 +20,7 @@ curl --location 'http://178.79.160.20:8000/nonce' \
 ### wallet login
 
 ```
-curl --location 'http://178.79.160.20:8000/wallet/login' \
+curl --location 'https://rb.blocknaut.xyz/wallet/login' \
 --header 'Content-Type: application/json' \
 --data '{
     "address": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
@@ -37,7 +37,7 @@ curl --location 'http://178.79.160.20:8000/wallet/login' \
 ### issue UID
 
 ```
-curl --location 'http://178.79.160.20:8000/issue' \
+curl --location 'https://rb.blocknaut.xyz/issue' \
 --header 'Authorization: b5EcCeW7wedxN3Zd8a9H' \
 --header 'Content-Type: application/json' \
 --data '{
@@ -54,7 +54,7 @@ curl --location 'http://178.79.160.20:8000/issue' \
 ### user INFO
 
 ```
-curl --location 'http://178.79.160.20:8000/userinfo' \
+curl --location 'https://rb.blocknaut.xyz/userinfo' \
 --header 'Authorization: b5EcCeW7wedxN3Zd8a9H' \
 --data ''
 ```
