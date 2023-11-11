@@ -44,7 +44,9 @@ pub async fn nonce(data: web::Json<NonceReq>) -> HttpResponse {
     let mut conn = connect();
 
     let nonce_key = format!("rb:nonce:{}", data.address);
-    let nonce_data: u64 = conn.get(&nonce_key).unwrap();
+    let nonce_data: u64 = conn.get(&nonce_key).unwrap_or_else(|_err| {
+        return 0u64;
+    });
     let nonce = NonceResp {
         nonce: nonce_data,
         address: data.address.to_owned(),
