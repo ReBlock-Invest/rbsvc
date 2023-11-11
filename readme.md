@@ -38,10 +38,10 @@ curl --location 'http://178.79.160.20:8000/wallet/login' \
 
 ```
 curl --location 'http://178.79.160.20:8000/issue' \
+--header 'Authorization: b5EcCeW7wedxN3Zd8a9H' \
 --header 'Content-Type: application/json' \
 --data '{
-    "type_id": "1",
-    "recipient": "0xBB11"
+    "recipient": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 }'
 ```
 
