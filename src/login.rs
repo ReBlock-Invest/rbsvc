@@ -1,6 +1,8 @@
 use actix_web::{http::header::ContentType, web, HttpResponse};
 use ethers::prelude::*;
 use ethers::utils::keccak256;
+use rand::distributions::Alphanumeric;
+use rand::{thread_rng, Rng};
 use redis::Commands;
 use serde::{Deserialize, Serialize};
 use std::env;
@@ -86,11 +88,16 @@ pub async fn wallet_login(data: web::Json<LoginReq>) -> HttpResponse {
             .body("{}");
     }
 
+    let session = generate_random_string(20);
+
     let resp = LoginResp {
-        access_token: String::from("AaaJhHHJ"),
+        access_token: session.clone(),
     };
 
     let _: i64 = conn.incr(&key, 1).unwrap();
+
+    let sess_key = format!("rb:session:{}", session);
+    let _: () = conn.set(&sess_key, &data.address).unwrap();
 
     HttpResponse::Ok()
         .content_type(ContentType::json())
@@ -107,4 +114,15 @@ fn eth_message(message: String) -> [u8; 32] {
         )
         .as_bytes(),
     )
+}
+
+fn generate_random_string(length: usize) -> String {
+    let rng = thread_rng();
+    let random_string: String = rng
+        .sample_iter(&Alphanumeric)
+        .map(char::from)
+        .take(length)
+        .collect();
+
+    random_string
 }
