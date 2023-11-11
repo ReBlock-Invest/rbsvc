@@ -1,4 +1,4 @@
-use crate::user::{get_user, update_user, UserResp};
+use crate::user::{get_user, update_user};
 use actix_web::{http::header::ContentType, web, HttpResponse};
 use ethers::prelude::*;
 use ethers::utils::keccak256;
