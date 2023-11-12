@@ -1,5 +1,6 @@
 use actix_web::dev::Server;
 use actix_web::{web, App, HttpResponse, HttpServer, Responder, Result};
+use std::env;
 
 mod login;
 mod uid;
@@ -19,6 +20,9 @@ pub fn run() -> Result<Server, std::io::Error> {
         App::new()
             .wrap(
                 actix_cors::Cors::default()
+                    .allowed_origin(
+                        &env::var("CORS_ALLOWED_ORIGIN").expect("missing environment variable CORS_ALLOWED_ORIGIN")
+                    )
                     .allowed_methods(vec!["GET", "POST", "PATCH", "DELETE"])
                     .allowed_headers(vec![
                         actix_web::http::header::AUTHORIZATION,
