@@ -137,7 +137,7 @@ fn update_user_invest_state(address: &str) {
         let _ = update_user(
             address.to_owned(),
             String::from("invest_state"),
-            String::from("WALLET_VERIFIED"),
+            String::from(""),
         );
     }
 }
