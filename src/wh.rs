@@ -15,17 +15,18 @@ pub async fn webhook(body: Bytes) -> HttpResponse {
     let parsed_json =
         serde_json::from_str(&format!("{}", json_string)).expect("Failed to parse JSON");
 
-    let event_type_path = "attributes.name";
+    let event_type_path = "data.attributes.name";
     let event_type =
         extract_value(&parsed_json, event_type_path).unwrap_or_else(|| return String::from(""));
     let event_type_str: &str = event_type.trim_matches('"');
 
-    let reference_id_path = "attributes.payload.data.attributes.reference-id";
+    let reference_id_path = "data.attributes.payload.data.attributes.reference-id";
     let reference_id =
         extract_value(&parsed_json, reference_id_path).unwrap_or_else(|| return String::from(""));
     let reference_id_str: &str = reference_id.trim_matches('"');
 
-    let country_code_path = "attributes.payload.data.attributes.fields.address-country-code.value";
+    let country_code_path =
+        "data.attributes.payload.data.attributes.fields.address-country-code.value";
     let country_code =
         extract_value(&parsed_json, country_code_path).unwrap_or_else(|| return String::from(""));
     let country_code_str: &str = country_code.trim_matches('"');
