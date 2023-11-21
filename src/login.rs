@@ -63,7 +63,7 @@ pub async fn wallet_login(data: web::Json<LoginReq>) -> HttpResponse {
     let nonce_data: u64 = conn.get(&key).unwrap_or_else(|_err| {
         return 0u64;
     });
-
+    /*
     let signature = Signature::from_str(&data.signature).expect("Invalid signature format");
     let message = eth_message(nonce_data.to_string());
     let address = Address::from_str(&data.address).expect("Invalid Ethereum address format");
@@ -91,7 +91,7 @@ pub async fn wallet_login(data: web::Json<LoginReq>) -> HttpResponse {
             .content_type(ContentType::json())
             .body("{}");
     }
-
+    */
     let session = generate_random_string(20);
     let resp = LoginResp {
         access_token: session.clone(),
